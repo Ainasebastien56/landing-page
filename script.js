@@ -1,11 +1,19 @@
 const hamburger = document.getElementById('hamburger');
 const navBar = document.querySelector('#nav-bar');
+const links = document.querySelectorAll('#nav-bar a');
 const cards =  document.querySelectorAll('#features .feature-card');
 const pricingCards = document.querySelectorAll('#pricing .pricing-card');
 
 hamburger.addEventListener('click', () => {
     navBar.classList.toggle('active');
 });
+
+links.forEach(link=>{
+    link.addEventListener('click',()=>{
+        links.forEach(l => l.classList.remove('active-link'));
+        link.classList.add('active-link');
+    })
+})
 
 const observer = new IntersectionObserver((entries)=>{
    entries.forEach(entry=>{

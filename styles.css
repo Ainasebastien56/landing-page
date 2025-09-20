@@ -53,6 +53,7 @@ body{
   position: relative;
   padding-bottom: 5px;
 }
+
 a.nav-link::after{
   content:"";
   position: absolute;
@@ -65,6 +66,9 @@ a.nav-link::after{
   transition: transform 0.2s ease-in-out;
 }
 a.nav-link:hover::after{
+  transform: translateX(-50%) scale(1);
+}
+a.active-link::after{
   transform: translateX(-50%) scale(1);
 }
  #hamburger {

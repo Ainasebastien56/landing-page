@@ -23,6 +23,7 @@ body{
   width:100%;
   justify-content:space-between;
   background-color:rgba(255, 255, 255, 0.8);
+  backdrop-filter: 10px;
   box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);
   transition:0.3s; 
 }
@@ -54,6 +55,11 @@ body{
 .nav-link:hover{
   border-bottom: 2px solid #76c893;
 }
+ #hamburger {
+    display: none;
+    cursor: pointer;
+}
+
 
 #hero{
   display:flex;
@@ -246,16 +252,27 @@ h1, h2, p{
 }
 
 @media only screen and (max-width:600px){
-   #header{
-    flex-direction:column;
-    background-color:rgb(255, 255, 255);
-  }
   #nav-bar{
-    width:100%;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    width: 200px;
     flex-direction:column;
-    align-items:center;
-    margin: 20px 0;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0;
+    background: white;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    border-radius: 12px;
   }
+  #nav-bar.active{
+    transform: translateX(0);
+  }
+   #hamburger {
+        display: block;
+    }
   #how_it_works #video{
     width:100%;
     height:200px;

@@ -86,17 +86,59 @@ a.active-link::after{
   
 }
 
-.hero-container{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 85px 10%; 
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4vw;
+  padding: 85px 10%;
+  min-height: 70vh;
 }
 
-.hero-content{
-  flex:1;
-  max-width: 50%;
-  text-align:center;
+.hero-content {
+  flex: 1 1 0;
+  max-width: 480px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+#form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.hero-image {
+  flex: 1 1 0;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-image img {
+  width: 100%;
+  max-width: 340px;
+  min-width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 h1, h2, p{
@@ -198,38 +240,49 @@ h1, h2, p{
   flex-wrap:wrap;
 }
 
+/* Feature cards: use keyframe-based reveal with stagger via --delay */
 #features .feature-card{
   background:white;
   padding:20px;
   border-radius:10px;
   flex:1;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   min-width:250px;
   text-align:center;
-  transform: translateX(-100%);
   opacity: 0;
-  transition: transform 0.8s ease, opacity 0.8s ease;
+  transform: translateY(18px) scale(0.995);
+  /* default delay variable; JS sets --delay per-card for stagger */
+  --delay: 0ms;
 }
 
+/* When revealed, run the slideUp animation and let icon pop slightly afterwards */
 #features .feature-card.show{
-  transform: translateX(0);
-  opacity: 1;
+  animation: slideUp 600ms cubic-bezier(.2,.9,.2,1) forwards;
+  animation-delay: var(--delay);
 }
 
-#features .feature-card.show:nth-child(1){
-  transition-delay: 300ms;
-}
-#features .feature-card.show:nth-child(2){
-  transition-delay: 600ms;
-}
-#features .feature-card.show:nth-child(3){
-  transition-delay: 900ms;
+#features .feature-card.show .custom-icon{
+  animation: iconPop 480ms cubic-bezier(.2,.9,.2,1) both;
+  animation-delay: calc(var(--delay) + 90ms);
 }
 
 
 .custom-icon{
   font-size:45px;
   margin-bottom:20px;
+}
+
+/* small icon pop animation */
+@keyframes iconPop{
+  0% { transform: scale(0.7) translateY(6px); opacity: 0; }
+  60% { transform: scale(1.06) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* slide-up reveal used by feature and pricing cards */
+@keyframes slideUp{
+  from { opacity: 0; transform: translateY(18px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .icon-1{
@@ -347,34 +400,39 @@ h1, h2, p{
   background: white;
   border-radius: 12px;
   padding:50px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   line-height:2rem;
   text-align:center;
   opacity:0;
-  transform: translateX(-100%);
-  transition: transform 0.5s, opacity 0.5s ;
+  transform: translateY(18px) scale(0.995);
+  --delay: 0ms; /* will be set by JS for stagger */
 }
 
-#pricing .pricing-card.show:nth-child(1){
-  transition-delay: 300ms;
-  transform: translateX(0);
-  opacity: 1;
+/* Reveal pricing cards with the same slideUp, staggered via --delay */
+.pricing-card.show{
+  animation: slideUp 620ms cubic-bezier(.2,.9,.2,1) forwards;
+  animation-delay: var(--delay);
+}
 
-}
-#pricing .pricing-card.show:nth-child(2){
-  transition-delay: 600ms;
-  transform: translateX(0);
-  opacity: 1;
-}
-#pricing .pricing-card.show:nth-child(3){
-  transition-delay: 900ms;
-  transform: translateX(0);
-  opacity: 1;
-}
+/* Highlighted pricing card gets a colored style and a gentle floating effect once revealed */
 .pricing-card.highlight {
   background: #007bff;
   color: white;
-  transform: scale(1.05);
+}
+
+.pricing-card.highlight-show{
+  animation-name: slideUp, highlightFloat;
+  animation-duration: 620ms, 3000ms;
+  animation-delay: var(--delay), calc(var(--delay) + 620ms);
+  animation-fill-mode: forwards, both;
+  animation-iteration-count: 1, infinite;
+  animation-timing-function: cubic-bezier(.2,.9,.2,1), ease-in-out;
+}
+
+@keyframes highlightFloat{
+  0% { transform: translateY(0) scale(1); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+  50% { transform: translateY(-6px) scale(1.03); box-shadow: 0 18px 48px rgba(0,0,0,0.14); }
+  100% { transform: translateY(0) scale(1); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
 }
 
 .pricing-card h3{
@@ -472,30 +530,38 @@ hr{
     fill: #FFFFFF;
 }
 
-@media only screen and (max-width:768px){
-   
-  .hero-container{
-    flex-direction:column-reverse;
-    text-align:center;
-    align-items:center;
+
+@media only screen and (max-width: 900px) {
+  .hero-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 60px 5% 40px 5%;
+    min-height: unset;
   }
-  .hero-content{
-    max-width:100%;
+  .hero-content {
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
   }
-  .hero-content h1{
-    font-size:2rem;
+  .hero-content h1,
+  .hero-content p {
+    text-align: center;
   }
-   .hero-content p{
-    font-size:1rem;
+  #form {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: stretch;
   }
-  #form{
-    flex-direction:column;
+  .hero-image {
+    max-width: 100%;
   }
-  .hero-image{
-    max-width:100%;
-  }
-  .hero-image img{
-    width:50%;
+  .hero-image img {
+    width: 70vw;
+    max-width: 320px;
+    min-width: 120px;
   }
 
   .features-cards{
